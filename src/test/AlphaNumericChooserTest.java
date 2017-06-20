@@ -5,7 +5,9 @@ import com.teamtreehouse.vending.AlphaNumericChooser;
 import com.teamtreehouse.vending.InvalidLocationException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,6 +16,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class AlphaNumericChooserTest {
 
+
+    @Rule
+    public ExpectedException mThrow = ExpectedException.none();
 
     private AlphaNumericChooser mChooser;
 
@@ -38,5 +43,12 @@ public class AlphaNumericChooserTest {
     @Test(expected = InvalidLocationException.class)
     public void choosingLargeThanMaxIsNotAllowed() throws Exception {
         mChooser.locationFromInput("B52");
+    }
+
+    @Test
+    public void constructingLaregerThanAlphabeticNotAllowed() throws Exception {
+        mThrow.expect(IllegalArgumentException.class);
+        mThrow.expectMessage("Maximum rows supported is 26");
+        new AlphaNumericChooser(27, 10);
     }
 }
